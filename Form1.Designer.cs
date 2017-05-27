@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Facebook_displayer));
             this.WebFacebook = new System.Windows.Forms.WebBrowser();
             this.btnSignIn = new System.Windows.Forms.Button();
             this.lstNotificationList = new System.Windows.Forms.ListBox();
@@ -42,12 +43,15 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btn_scan = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lbl4 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -58,9 +62,6 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.btn_scan = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -73,22 +74,26 @@
             // 
             // WebFacebook
             // 
-            this.WebFacebook.Location = new System.Drawing.Point(8, 6);
+            this.WebFacebook.Location = new System.Drawing.Point(-387, -179);
             this.WebFacebook.MinimumSize = new System.Drawing.Size(20, 20);
             this.WebFacebook.Name = "WebFacebook";
-            this.WebFacebook.Size = new System.Drawing.Size(512, 266);
+            this.WebFacebook.ScriptErrorsSuppressed = true;
+            this.WebFacebook.Size = new System.Drawing.Size(1347, 518);
             this.WebFacebook.TabIndex = 0;
             this.WebFacebook.Url = new System.Uri("", System.UriKind.Relative);
+            this.WebFacebook.WebBrowserShortcutsEnabled = false;
             this.WebFacebook.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WebFacebook_DocumentCompleted);
             // 
             // btnSignIn
             // 
+            this.btnSignIn.BackColor = System.Drawing.Color.AliceBlue;
+            this.btnSignIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnSignIn.Location = new System.Drawing.Point(8, 280);
             this.btnSignIn.Name = "btnSignIn";
             this.btnSignIn.Size = new System.Drawing.Size(512, 23);
             this.btnSignIn.TabIndex = 1;
-            this.btnSignIn.Text = "Uruchom";
-            this.btnSignIn.UseVisualStyleBackColor = true;
+            this.btnSignIn.Text = "Logowanie";
+            this.btnSignIn.UseVisualStyleBackColor = false;
             this.btnSignIn.Click += new System.EventHandler(this.btnSignIn_Click);
             // 
             // lstNotificationList
@@ -139,6 +144,7 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
@@ -172,7 +178,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(529, 305);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Powiadomienia";
+            this.tabPage2.Text = "Polubione strony";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // groupBox4
@@ -183,7 +189,7 @@
             this.groupBox4.Size = new System.Drawing.Size(512, 140);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Lista powiadomien";
+            this.groupBox4.Text = "Lista polubionych stron";
             // 
             // groupBox3
             // 
@@ -215,6 +221,16 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Serial Port";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btn_scan
+            // 
+            this.btn_scan.Location = new System.Drawing.Point(22, 40);
+            this.btn_scan.Name = "btn_scan";
+            this.btn_scan.Size = new System.Drawing.Size(65, 21);
+            this.btn_scan.TabIndex = 21;
+            this.btn_scan.Text = "Skanuj";
+            this.btn_scan.UseVisualStyleBackColor = true;
+            this.btn_scan.Click += new System.EventHandler(this.btn_scan_Click);
             // 
             // label3
             // 
@@ -267,7 +283,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.lbl4);
             this.groupBox2.Controls.Add(this.button5);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.textBox2);
@@ -277,6 +293,26 @@
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Otrzymane dane";
+            // 
+            // lbl4
+            // 
+            this.lbl4.AutoSize = true;
+            this.lbl4.Location = new System.Drawing.Point(130, 181);
+            this.lbl4.Name = "lbl4";
+            this.lbl4.Size = new System.Drawing.Size(82, 13);
+            this.lbl4.TabIndex = 13;
+            this.lbl4.Text = "Auto wysyłanie:";
+            this.lbl4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(214, 176);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(39, 23);
+            this.button5.TabIndex = 3;
+            this.button5.Text = "Off";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click_1);
             // 
             // button2
             // 
@@ -372,45 +408,17 @@
             this.comboBox1.TabIndex = 10;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
-            // btn_scan
-            // 
-            this.btn_scan.Location = new System.Drawing.Point(22, 40);
-            this.btn_scan.Name = "btn_scan";
-            this.btn_scan.Size = new System.Drawing.Size(65, 21);
-            this.btn_scan.TabIndex = 21;
-            this.btn_scan.Text = "Skanuj";
-            this.btn_scan.UseVisualStyleBackColor = true;
-            this.btn_scan.Click += new System.EventHandler(this.btn_scan_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(214, 176);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(39, 23);
-            this.button5.TabIndex = 3;
-            this.button5.Text = "Off";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click_1);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(130, 181);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 13);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "Auto wysyłanie:";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
             // Facebook_displayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(132)))), ((int)(((byte)(180)))));
             this.ClientSize = new System.Drawing.Size(561, 348);
             this.Controls.Add(this.tabControl1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Facebook_displayer";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Facebook Displayer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Facebook_displayer_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -463,7 +471,7 @@
         private System.Windows.Forms.Button btn_wyslij_liste;
         private System.Windows.Forms.Button btn_scan;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lbl4;
     }
 }
 

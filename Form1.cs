@@ -16,10 +16,17 @@ namespace facebook_displayer
 
     public partial class Facebook_displayer : Form
     {
+        public bool wyslano_calosc = false;
+        public bool jest_nowe = true;
+        public bool pom = false;
+        public string user_info = "";
         public string caly_tekst="";
+        public string nowy_tekst = "";
         public string tekst;
+        public double i = 0;
         public Facebook_displayer()
         {
+            WebBrowser WebFacebook = new WebBrowser();
             serialPort1 = new SerialPort();
             InitializeComponent();
         }
@@ -35,43 +42,43 @@ namespace facebook_displayer
             String[] ports = SerialPort.GetPortNames();
             comboBox1.Items.AddRange(ports);
         }
-
+        
         private void btnSignIn_Click(object sender, EventArgs e)
         {
-            string OAuthURL = @"https://www.facebook.com/v2.3/dialog/oauth?client_id=1373520086004317&redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token&scope=email";
+            string OAuthURL = @"https://www.facebook.com/dialog/oauth?client_id=1373520086004317&redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token&scope=user_birthday,user_likes,user_hometown,user_location,user_events";
             WebFacebook.Navigate(OAuthURL);
         }
+     
         string access_token;
-
         private void WebFacebook_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             if(WebFacebook.Url.AbsoluteUri.Contains("access_token"))
             {
-         
                 string url1 = WebFacebook.Url.AbsoluteUri;
                 string url2 = url1.Substring(url1.IndexOf("access_token") + 13);
                 access_token = url2.Substring(0, url2.IndexOf("&"));
                 //MessageBox.Show("access_token = " + access_token);
 
                 FacebookClient fb = new FacebookClient(access_token);
-                dynamic data = fb.Get("/me");
-                MessageBox.Show("Zalogowano jako " + data.name);
+                dynamic data = fb.Get("me?fields=name,birthday,education,gender,email");
+                MessageBox.Show("Zalogowano jako " + data.name + ", ur. " + data.birthday);
+                user_info = "nam=" + data.name + "\n" + "brd=" + data.birthday + "\n";
                 btn_Get_List.Enabled = true;
                 btnSignIn.Enabled = false;
                 btnClear.Enabled = true;
             }
+           
         }
      
         private void btn_Get_List_Click(object sender, EventArgs e)
         {
             try
             {
-                timer1.Start();
-                /*--------POBIERANIE LISTY POWIADOMIEN (NIEAUTOMATYCZNE)--------*/
+                /*--------POBIERANIE LISTY POWIADOMIEN--------*/
                 //FacebookClient fb = new FacebookClient(access_token);
                 //GET TOKEN: https://developers.facebook.com/tools/explorer/?method=GET&path=me%2Fstatuses&version=v2.9
-                FacebookClient fb = new FacebookClient("EAACEdEose0cBAP3jTTgqgO35eaq2iIZAtySuJPQnCMTfu0FGBvBkJZCVKYnz3w01ZAEqZBZANOJaZBPBB1pZCYOF72MUdALd4qzJTNrf8tUg7TTJbZAH9qO2JfDxv2W8YzBKuNWtpJYaIyb5yJc3EPqbwssEhByO0Fu0ASPR793Oe1llktlEpkuCkiol4ObaJPQZD");
-                dynamic notifications = fb.Get("/v2.3/me/notifications");
+                //FacebookClient fb = new FacebookClient("EAACEdEose0cBAMhZAPui70MamHZC2TefiZCOPZCTjqV1ouLcGYGRhH7sZAiPWAOq96TgPmiFShqyPTb6SWIEetegRzZA1bfxOZBUmzibQZCsQNMWIPEnSghY33aGP5fyk14dSzOZALyz86kOKyzPiQvB37Wd9ryWD6D60IcPf7LjkDnHguCWbXPSOLNbZACWWrQz0ZD");
+                /*dynamic notifications = fb.Get("/me/notifications");
                 int notification_count = (int)notifications.data.Count;
                 caly_tekst = "";
                 lstNotificationList.Items.Clear();
@@ -82,15 +89,62 @@ namespace facebook_displayer
                     string notification_name = notifications.data[i].title;
                     lstNotificationList.Items.Add(notification_name);
                 }
-                txtBox1.Text = caly_tekst;
+                txtBox1.Text = caly_tekst;*/
+                /*--------------------------------------------------------------*/
+                timer1.Start();
+                /*--------POBIERANIE POLUBIONYCH STRON--------*/
+                FacebookClient fb = new FacebookClient(access_token);
+                dynamic user_likes = fb.Get("/me/likes");
+                int likes_count = (int)user_likes.data.Count;
+
+                caly_tekst = "";
+                lstNotificationList.Items.Clear();
+                btn_wyslij_liste.Enabled = true;
+
+
+                if (wyslano_calosc == false)
+                {
+                    for (int i = 0; i < likes_count; i++)
+                    {
+                        caly_tekst += "msg=" + user_likes.data[i].name + "\n";
+                        string likes_name = user_likes.data[i].name;
+                        string likes_date = user_likes.data[i].created_time;
+                        lstNotificationList.Items.Add("[" + likes_date + "] " + likes_name);
+                    }
+                    caly_tekst += user_info;
+                    txtBox1.Text = caly_tekst;
+                    nowy_tekst = "msg=" + user_likes.data[0].name + "\n";
+                    wyslano_calosc = true;
+                }
+                else if(wyslano_calosc==true)
+                {
+
+                    for (int i = 0; i < likes_count; i++)
+                    {
+                        caly_tekst += "msg=" + user_likes.data[i].name + "\n";
+                        string likes_name = user_likes.data[i].name;
+                        string likes_date = user_likes.data[i].created_time;
+                        lstNotificationList.Items.Add("[" + likes_date + "] " + likes_name);
+                    }
+                    caly_tekst += user_info;
+                    txtBox1.Text = caly_tekst;
+
+                    if (nowy_tekst != "msg=" + user_likes.data[0].name + "\n")
+                    {
+                        jest_nowe = true;
+                        pom = true;
+                        nowy_tekst = "msg=" + user_likes.data[0].name + "\n";
+                    }
+
+                }
                 /*--------------------------------------------------------------*/
             }
-            catch(UnauthorizedAccessException)
+            catch (UnauthorizedAccessException)
             {
                 txtBox1.Clear();
                 txtBox1.Text = "UnauthorizedAccessException";
             }
-
+             
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -158,7 +212,7 @@ namespace facebook_displayer
                 if (serialPort1.IsOpen == true)
                 {
                     textBox2.Text = serialPort1.ReadExisting();
-                    textBox2.Text = tekst; //-DO ZMIANY-//
+                    //textBox2.Text = tekst;
                 }
                 else
                 {
@@ -235,8 +289,26 @@ namespace facebook_displayer
                 if (serialPort1.IsOpen == true)
                 { 
                     btn_wyslij_liste.Enabled = true;
-                    serialPort1.WriteLine(caly_tekst);
-                    tekst = caly_tekst;//-DO ZMIANY-//
+                    if (jest_nowe == true)
+                    {
+                        if (pom == false)
+                        {
+                            serialPort1.WriteLine(caly_tekst);
+                            tekst = caly_tekst;
+                        }
+                        else if (pom == true)
+                        {
+                            serialPort1.WriteLine(nowy_tekst);
+                            tekst = nowy_tekst;
+
+                        }
+                        jest_nowe = false;
+                        button2_Click(sender, e);
+                    }
+                    else
+                    {
+                      //MessageBox.Show("Nie ma nowego"); //do testow
+                    }
                     //textBox1.Clear();
                 }
                 else
@@ -257,8 +329,6 @@ namespace facebook_displayer
                 serialPort1.Close();
             }
         }
-
-
 
         private void btn_scan_Click(object sender, EventArgs e)
         {
@@ -281,5 +351,7 @@ namespace facebook_displayer
         {
 
         }
+
+ 
     }
 }
