@@ -38,36 +38,37 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.pg_logowanie = new System.Windows.Forms.TabPage();
+            this.pg_lista = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.pg_serialport = new System.Windows.Forms.TabPage();
             this.btn_scan = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btn_close_port = new System.Windows.Forms.Button();
+            this.btn_open_port = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbl4 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.btn_auto_wysylanie = new System.Windows.Forms.Button();
+            this.btn_read = new System.Windows.Forms.Button();
+            this.box_received_data = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btn_wyslij_liste = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btn_send = new System.Windows.Forms.Button();
+            this.box_sended_data = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.box_baud_rate = new System.Windows.Forms.ComboBox();
+            this.box_port_names = new System.Windows.Forms.ComboBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.btn_autoSignIn = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.pg_logowanie.SuspendLayout();
+            this.pg_lista.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.pg_serialport.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -90,9 +91,9 @@
             this.btnSignIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnSignIn.Location = new System.Drawing.Point(8, 280);
             this.btnSignIn.Name = "btnSignIn";
-            this.btnSignIn.Size = new System.Drawing.Size(512, 23);
+            this.btnSignIn.Size = new System.Drawing.Size(392, 23);
             this.btnSignIn.TabIndex = 1;
-            this.btnSignIn.Text = "Logowanie";
+            this.btnSignIn.Text = "Logowanie ręczne";
             this.btnSignIn.UseVisualStyleBackColor = false;
             this.btnSignIn.Click += new System.EventHandler(this.btnSignIn_Click);
             // 
@@ -124,7 +125,6 @@
             this.txtBox1.Name = "txtBox1";
             this.txtBox1.Size = new System.Drawing.Size(500, 108);
             this.txtBox1.TabIndex = 4;
-            this.txtBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // btnClear
             // 
@@ -135,51 +135,52 @@
             this.btnClear.TabIndex = 5;
             this.btnClear.Text = "Wyczyść";
             this.btnClear.UseVisualStyleBackColor = true;
-            this.btnClear.Click += new System.EventHandler(this.brnClear_Click);
+            this.btnClear.Click += new System.EventHandler(this.btn_Clear_Click);
             // 
             // timer1
             // 
-            this.timer1.Interval = 10000;
+            this.timer1.Interval = 5000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // tabControl1
             // 
             this.tabControl1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.pg_logowanie);
+            this.tabControl1.Controls.Add(this.pg_lista);
+            this.tabControl1.Controls.Add(this.pg_serialport);
             this.tabControl1.Location = new System.Drawing.Point(12, 5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(537, 331);
             this.tabControl1.TabIndex = 6;
             // 
-            // tabPage1
+            // pg_logowanie
             // 
-            this.tabPage1.Controls.Add(this.btnSignIn);
-            this.tabPage1.Controls.Add(this.WebFacebook);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(529, 305);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Logowanie";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            this.pg_logowanie.Controls.Add(this.btn_autoSignIn);
+            this.pg_logowanie.Controls.Add(this.btnSignIn);
+            this.pg_logowanie.Controls.Add(this.WebFacebook);
+            this.pg_logowanie.Location = new System.Drawing.Point(4, 22);
+            this.pg_logowanie.Name = "pg_logowanie";
+            this.pg_logowanie.Padding = new System.Windows.Forms.Padding(3);
+            this.pg_logowanie.Size = new System.Drawing.Size(529, 305);
+            this.pg_logowanie.TabIndex = 0;
+            this.pg_logowanie.Text = "Logowanie";
+            this.pg_logowanie.UseVisualStyleBackColor = true;
+            this.pg_logowanie.Click += new System.EventHandler(this.tabPage1_Click);
             // 
-            // tabPage2
+            // pg_lista
             // 
-            this.tabPage2.Controls.Add(this.groupBox4);
-            this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Controls.Add(this.btnClear);
-            this.tabPage2.Controls.Add(this.btn_Get_List);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(529, 305);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Polubione strony";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.pg_lista.Controls.Add(this.groupBox4);
+            this.pg_lista.Controls.Add(this.groupBox3);
+            this.pg_lista.Controls.Add(this.btnClear);
+            this.pg_lista.Controls.Add(this.btn_Get_List);
+            this.pg_lista.Location = new System.Drawing.Point(4, 22);
+            this.pg_lista.Name = "pg_lista";
+            this.pg_lista.Padding = new System.Windows.Forms.Padding(3);
+            this.pg_lista.Size = new System.Drawing.Size(529, 305);
+            this.pg_lista.TabIndex = 1;
+            this.pg_lista.Text = "Polubione strony";
+            this.pg_lista.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
@@ -201,26 +202,26 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Zawartosc do wyslania";
             // 
-            // tabPage3
+            // pg_serialport
             // 
-            this.tabPage3.Controls.Add(this.btn_scan);
-            this.tabPage3.Controls.Add(this.label3);
-            this.tabPage3.Controls.Add(this.label2);
-            this.tabPage3.Controls.Add(this.label1);
-            this.tabPage3.Controls.Add(this.button4);
-            this.tabPage3.Controls.Add(this.button3);
-            this.tabPage3.Controls.Add(this.groupBox2);
-            this.tabPage3.Controls.Add(this.groupBox1);
-            this.tabPage3.Controls.Add(this.progressBar1);
-            this.tabPage3.Controls.Add(this.comboBox2);
-            this.tabPage3.Controls.Add(this.comboBox1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(529, 305);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Serial Port";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.pg_serialport.Controls.Add(this.btn_scan);
+            this.pg_serialport.Controls.Add(this.label3);
+            this.pg_serialport.Controls.Add(this.label2);
+            this.pg_serialport.Controls.Add(this.label1);
+            this.pg_serialport.Controls.Add(this.btn_close_port);
+            this.pg_serialport.Controls.Add(this.btn_open_port);
+            this.pg_serialport.Controls.Add(this.groupBox2);
+            this.pg_serialport.Controls.Add(this.groupBox1);
+            this.pg_serialport.Controls.Add(this.progressBar1);
+            this.pg_serialport.Controls.Add(this.box_baud_rate);
+            this.pg_serialport.Controls.Add(this.box_port_names);
+            this.pg_serialport.Location = new System.Drawing.Point(4, 22);
+            this.pg_serialport.Name = "pg_serialport";
+            this.pg_serialport.Padding = new System.Windows.Forms.Padding(3);
+            this.pg_serialport.Size = new System.Drawing.Size(529, 305);
+            this.pg_serialport.TabIndex = 2;
+            this.pg_serialport.Text = "Serial Port";
+            this.pg_serialport.UseVisualStyleBackColor = true;
             // 
             // btn_scan
             // 
@@ -249,7 +250,6 @@
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 19;
             this.label2.Text = "Baud rate";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label1
             // 
@@ -260,33 +260,33 @@
             this.label1.TabIndex = 18;
             this.label1.Text = "Port names";
             // 
-            // button4
+            // btn_close_port
             // 
-            this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(357, 49);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(82, 21);
-            this.button4.TabIndex = 17;
-            this.button4.Text = "Zamknij port";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btn_close_port.Enabled = false;
+            this.btn_close_port.Location = new System.Drawing.Point(357, 49);
+            this.btn_close_port.Name = "btn_close_port";
+            this.btn_close_port.Size = new System.Drawing.Size(82, 21);
+            this.btn_close_port.TabIndex = 17;
+            this.btn_close_port.Text = "Zamknij port";
+            this.btn_close_port.UseVisualStyleBackColor = true;
+            this.btn_close_port.Click += new System.EventHandler(this.btn_close_port_Click);
             // 
-            // button3
+            // btn_open_port
             // 
-            this.button3.Location = new System.Drawing.Point(357, 22);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(82, 21);
-            this.button3.TabIndex = 16;
-            this.button3.Text = "Otworz port";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btn_open_port.Location = new System.Drawing.Point(357, 22);
+            this.btn_open_port.Name = "btn_open_port";
+            this.btn_open_port.Size = new System.Drawing.Size(82, 21);
+            this.btn_open_port.TabIndex = 16;
+            this.btn_open_port.Text = "Otworz port";
+            this.btn_open_port.UseVisualStyleBackColor = true;
+            this.btn_open_port.Click += new System.EventHandler(this.btn_open_port_Click);
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.lbl4);
-            this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Controls.Add(this.textBox2);
+            this.groupBox2.Controls.Add(this.btn_auto_wysylanie);
+            this.groupBox2.Controls.Add(this.btn_read);
+            this.groupBox2.Controls.Add(this.box_received_data);
             this.groupBox2.Location = new System.Drawing.Point(260, 76);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(263, 204);
@@ -302,43 +302,42 @@
             this.lbl4.Size = new System.Drawing.Size(82, 13);
             this.lbl4.TabIndex = 13;
             this.lbl4.Text = "Auto wysyłanie:";
-            this.lbl4.Click += new System.EventHandler(this.label4_Click);
             // 
-            // button5
+            // btn_auto_wysylanie
             // 
-            this.button5.Location = new System.Drawing.Point(214, 176);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(39, 23);
-            this.button5.TabIndex = 3;
-            this.button5.Text = "Off";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click_1);
+            this.btn_auto_wysylanie.Location = new System.Drawing.Point(214, 176);
+            this.btn_auto_wysylanie.Name = "btn_auto_wysylanie";
+            this.btn_auto_wysylanie.Size = new System.Drawing.Size(39, 23);
+            this.btn_auto_wysylanie.TabIndex = 3;
+            this.btn_auto_wysylanie.Text = "Off";
+            this.btn_auto_wysylanie.UseVisualStyleBackColor = true;
+            this.btn_auto_wysylanie.Click += new System.EventHandler(this.btn_auto_send);
             // 
-            // button2
+            // btn_read
             // 
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(6, 175);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Odczytaj";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btn_read.Enabled = false;
+            this.btn_read.Location = new System.Drawing.Point(6, 175);
+            this.btn_read.Name = "btn_read";
+            this.btn_read.Size = new System.Drawing.Size(75, 23);
+            this.btn_read.TabIndex = 2;
+            this.btn_read.Text = "Odczytaj";
+            this.btn_read.UseVisualStyleBackColor = true;
+            this.btn_read.Click += new System.EventHandler(this.btn_read_Click);
             // 
-            // textBox2
+            // box_received_data
             // 
-            this.textBox2.Location = new System.Drawing.Point(6, 19);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(251, 150);
-            this.textBox2.TabIndex = 12;
+            this.box_received_data.Location = new System.Drawing.Point(6, 19);
+            this.box_received_data.Multiline = true;
+            this.box_received_data.Name = "box_received_data";
+            this.box_received_data.ReadOnly = true;
+            this.box_received_data.Size = new System.Drawing.Size(251, 150);
+            this.box_received_data.TabIndex = 12;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btn_wyslij_liste);
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.btn_send);
+            this.groupBox1.Controls.Add(this.box_sended_data);
             this.groupBox1.Location = new System.Drawing.Point(6, 76);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(247, 204);
@@ -355,27 +354,27 @@
             this.btn_wyslij_liste.TabIndex = 2;
             this.btn_wyslij_liste.Text = "Wyslij liste";
             this.btn_wyslij_liste.UseVisualStyleBackColor = true;
-            this.btn_wyslij_liste.Click += new System.EventHandler(this.button5_Click);
+            this.btn_wyslij_liste.Click += new System.EventHandler(this.btn_send_list_Click);
             // 
-            // button1
+            // btn_send
             // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(166, 175);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Wyslij";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btn_send.Enabled = false;
+            this.btn_send.Location = new System.Drawing.Point(166, 175);
+            this.btn_send.Name = "btn_send";
+            this.btn_send.Size = new System.Drawing.Size(75, 23);
+            this.btn_send.TabIndex = 1;
+            this.btn_send.Text = "Wyslij";
+            this.btn_send.UseVisualStyleBackColor = true;
+            this.btn_send.Click += new System.EventHandler(this.btn_send_Click);
             // 
-            // textBox1
+            // box_sended_data
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(6, 19);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(235, 150);
-            this.textBox1.TabIndex = 0;
+            this.box_sended_data.Enabled = false;
+            this.box_sended_data.Location = new System.Drawing.Point(6, 19);
+            this.box_sended_data.Multiline = true;
+            this.box_sended_data.Name = "box_sended_data";
+            this.box_sended_data.Size = new System.Drawing.Size(235, 150);
+            this.box_sended_data.TabIndex = 0;
             // 
             // progressBar1
             // 
@@ -384,29 +383,40 @@
             this.progressBar1.Size = new System.Drawing.Size(100, 13);
             this.progressBar1.TabIndex = 13;
             // 
-            // comboBox2
+            // box_baud_rate
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.box_baud_rate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.box_baud_rate.FormattingEnabled = true;
+            this.box_baud_rate.Items.AddRange(new object[] {
             "9600",
             "115200"});
-            this.comboBox2.Location = new System.Drawing.Point(220, 40);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 11;
+            this.box_baud_rate.Location = new System.Drawing.Point(220, 40);
+            this.box_baud_rate.Name = "box_baud_rate";
+            this.box_baud_rate.Size = new System.Drawing.Size(121, 21);
+            this.box_baud_rate.TabIndex = 11;
             // 
-            // comboBox1
+            // box_port_names
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.box_port_names.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.box_port_names.FormattingEnabled = true;
+            this.box_port_names.Items.AddRange(new object[] {
             ""});
-            this.comboBox1.Location = new System.Drawing.Point(93, 40);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 10;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.box_port_names.Location = new System.Drawing.Point(93, 40);
+            this.box_port_names.Name = "box_port_names";
+            this.box_port_names.Size = new System.Drawing.Size(121, 21);
+            this.box_port_names.TabIndex = 10;
+            // 
+            // btn_autoSignIn
+            // 
+            this.btn_autoSignIn.BackColor = System.Drawing.Color.AliceBlue;
+            this.btn_autoSignIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btn_autoSignIn.Location = new System.Drawing.Point(406, 280);
+            this.btn_autoSignIn.Name = "btn_autoSignIn";
+            this.btn_autoSignIn.Size = new System.Drawing.Size(117, 23);
+            this.btn_autoSignIn.TabIndex = 2;
+            this.btn_autoSignIn.Text = "Automatyczne";
+            this.btn_autoSignIn.UseVisualStyleBackColor = false;
+            this.btn_autoSignIn.Click += new System.EventHandler(this.btn_autoSignIn_Click);
             // 
             // Facebook_displayer
             // 
@@ -421,15 +431,15 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Facebook Displayer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Facebook_displayer_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.Facebook_Displayer_Load);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.pg_logowanie.ResumeLayout(false);
+            this.pg_lista.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.pg_serialport.ResumeLayout(false);
+            this.pg_serialport.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -448,30 +458,31 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage pg_logowanie;
+        private System.Windows.Forms.TabPage pg_lista;
+        private System.Windows.Forms.TabPage pg_serialport;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox box_received_data;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btn_close_port;
+        private System.Windows.Forms.Button btn_open_port;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btn_read;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btn_send;
+        private System.Windows.Forms.TextBox box_sended_data;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox box_baud_rate;
+        private System.Windows.Forms.ComboBox box_port_names;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btn_wyslij_liste;
         private System.Windows.Forms.Button btn_scan;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btn_auto_wysylanie;
         private System.Windows.Forms.Label lbl4;
+        private System.Windows.Forms.Button btn_autoSignIn;
     }
 }
 

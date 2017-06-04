@@ -12,10 +12,10 @@ using System.IO.Ports;
 
 namespace facebook_displayer
 {
-
-
     public partial class Facebook_displayer : Form
     {
+/* ----------------------------------------------- */
+/* -- DEKLARACJA ZMIENNYCH POMOCNICZYCH -- */
         public bool wyslano_calosc = false;
         public bool jest_nowe = true;
         public bool pom = false;
@@ -24,33 +24,60 @@ namespace facebook_displayer
         public string nowy_tekst = "";
         public string tekst;
         public double i = 0;
-        public Facebook_displayer()
+        public bool auto_login = false;
+        string access_token;
+/* !! DEKLARACJA ZMIENNYCH POMOCNICZYCH !! */
+/* ----------------------------------------------- */
+
+
+/* ----------------------------------------------- */
+/* -- METODY ZWIĄZANE Z GŁÓWNYM OKNEM APLIKACJI -- */
+        public Facebook_displayer() //Konstruktor klasy
         {
             WebBrowser WebFacebook = new WebBrowser();
             serialPort1 = new SerialPort();
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void Facebook_Displayer_Load(object sender, EventArgs e) //Wykonanywane po załadowaniu okna aplikacji
         {
             getAvailablePorts();
         }
 
-        public void getAvailablePorts()
+        private void Facebook_displayer_FormClosing(object sender, FormClosingEventArgs e) //Wykonane po zamknięciu aplikacji
         {
-            comboBox1.Items.Clear();
-            String[] ports = SerialPort.GetPortNames();
-            comboBox1.Items.AddRange(ports);
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Close();
+            }
         }
-        
-        private void btnSignIn_Click(object sender, EventArgs e)
+
+        public void getAvailablePorts() //funkcja pobierająca aktualnie podłączone porty
+        {
+            box_port_names.Items.Clear();
+            String[] ports = SerialPort.GetPortNames();
+            box_port_names.Items.AddRange(ports);
+        }
+/* !! METODY ZWIĄZANE Z GŁÓWNYM OKNEM APLIKACJI !! */
+/* ----------------------------------------------- */
+
+
+/* ----------------------------------------------- */
+/* -- ZAKŁADKA - LOGOWANIE -- */
+        private void btnSignIn_Click(object sender, EventArgs e) //przycisk łączący z serwerem http faceooka
         {
             string OAuthURL = @"https://www.facebook.com/dialog/oauth?client_id=1373520086004317&redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token&scope=user_birthday,user_likes,user_hometown,user_location,user_events";
             WebFacebook.Navigate(OAuthURL);
+        } 
+    
+        private void btn_autoSignIn_Click(object sender, EventArgs e)
+        {
+            string OAuthURL = @"https://www.facebook.com/dialog/oauth?client_id=1373520086004317&redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token&scope=user_birthday,user_likes,user_hometown,user_location,user_events";
+            auto_login = true;
+            WebFacebook.Navigate(OAuthURL);
+        
         }
-     
-        string access_token;
-        private void WebFacebook_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void WebFacebook_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) //funkcja pobierająca token uzytkownika
         {
             if(WebFacebook.Url.AbsoluteUri.Contains("access_token"))
             {
@@ -61,16 +88,28 @@ namespace facebook_displayer
 
                 FacebookClient fb = new FacebookClient(access_token);
                 dynamic data = fb.Get("me?fields=name,birthday,education,gender,email");
-                MessageBox.Show("Zalogowano jako " + data.name + ", ur. " + data.birthday);
-                user_info = "nam=" + data.name + "\n" + "brd=" + data.birthday + "\n";
+                if(auto_login==false) MessageBox.Show("Zalogowano jako " + data.name + ", ur. " + data.birthday);
+                user_info = "usr=" + data.name + "$" + "dat=" + data.birthday + "$";
                 btn_Get_List.Enabled = true;
                 btnSignIn.Enabled = false;
+                btn_autoSignIn.Enabled = false;
                 btnClear.Enabled = true;
+
+                if (auto_login == true)
+                {
+                    btn_Get_List_Click(sender, e);
+                    btn_auto_wysylanie.Text = "On";
+                }
             }
            
         }
-     
-        private void btn_Get_List_Click(object sender, EventArgs e)
+/* !! ZAKŁADKA - LOGOWANIE !! */
+/* ----------------------------------------------- */
+
+
+/* -- ZAKŁADKA - POLUBIONE STRONY -- */
+/* ----------------------------------------------- */
+        private void btn_Get_List_Click(object sender, EventArgs e) //pobieranie listy z facebooka
         {
             try
             {
@@ -106,14 +145,14 @@ namespace facebook_displayer
                 {
                     for (int i = 0; i < likes_count; i++)
                     {
-                        caly_tekst += "msg=" + user_likes.data[i].name + "\n";
+                        caly_tekst += "msg=" + user_likes.data[i].name + "$";
                         string likes_name = user_likes.data[i].name;
                         string likes_date = user_likes.data[i].created_time;
                         lstNotificationList.Items.Add("[" + likes_date + "] " + likes_name);
                     }
                     caly_tekst += user_info;
                     txtBox1.Text = caly_tekst;
-                    nowy_tekst = "msg=" + user_likes.data[0].name + "\n";
+                    nowy_tekst = "msg=" + user_likes.data[0].name + "$";
                     wyslano_calosc = true;
                 }
                 else if(wyslano_calosc==true)
@@ -121,7 +160,7 @@ namespace facebook_displayer
 
                     for (int i = 0; i < likes_count; i++)
                     {
-                        caly_tekst += "msg=" + user_likes.data[i].name + "\n";
+                        caly_tekst += "msg=" + user_likes.data[i].name + "$";
                         string likes_name = user_likes.data[i].name;
                         string likes_date = user_likes.data[i].created_time;
                         lstNotificationList.Items.Add("[" + likes_date + "] " + likes_name);
@@ -129,11 +168,11 @@ namespace facebook_displayer
                     caly_tekst += user_info;
                     txtBox1.Text = caly_tekst;
 
-                    if (nowy_tekst != "msg=" + user_likes.data[0].name + "\n")
+                    if (nowy_tekst != "msg=" + user_likes.data[0].name + "$")
                     {
                         jest_nowe = true;
                         pom = true;
-                        nowy_tekst = "msg=" + user_likes.data[0].name + "\n";
+                        nowy_tekst = "msg=" + user_likes.data[0].name + "$";
                     }
 
                 }
@@ -144,98 +183,87 @@ namespace facebook_displayer
                 txtBox1.Clear();
                 txtBox1.Text = "UnauthorizedAccessException";
             }
-             
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void brnClear_Click(object sender, EventArgs e)
+        private void btn_Clear_Click(object sender, EventArgs e)
         {
             lstNotificationList.Items.Clear();
             timer1.Stop();
         }
+/* !! ZAKŁADKA - POLUBIONE STRONY !! */
+/* ----------------------------------------------- */
 
+
+/* -- ZAKŁADKA - SERIAL PORT -- */
+/* ----------------------------------------------- */
         private void timer1_Tick(object sender, EventArgs e)
         {
             btn_Get_List_Click(sender, e);
 
             if(serialPort1.IsOpen)
             {
-                if (button5.Text == "On" && btn_wyslij_liste.Enabled == true)
+                if (btn_auto_wysylanie.Text == "On" && btn_wyslij_liste.Enabled == true)
                 {
-                    button5_Click(sender, e);
+                    btn_send_list_Click(sender, e);
                 }
             }
         }
-
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
+   
+        private void btn_send_Click(object sender, EventArgs e)
         {
             try
             {
                 if (serialPort1.IsOpen == true)
                 {
-                    if (textBox1.Text != "")
+                    if (box_sended_data.Text != "")
                     {
-                        serialPort1.WriteLine(textBox1.Text);
-                        tekst = textBox1.Text;//-DO ZMIANY-//
-                        textBox1.Clear();
+                        serialPort1.WriteLine(box_sended_data.Text);
+                        tekst = box_sended_data.Text;//-DO ZMIANY-//
+                        box_sended_data.Clear();
                     }
                 }
                 else
                 {
-                    textBox1.Text = "Port jest zamkniety!";
+                    box_sended_data.Text = "Port jest zamkniety!";
                 }
             }
             catch (TimeoutException)
             {
-                textBox2.Text = "Timeout Exception";
+                box_received_data.Text = "Timeout Exception";
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btn_read_Click(object sender, EventArgs e)
         {
             try
             {
                 if (serialPort1.IsOpen == true)
                 {
-                    textBox2.Text = serialPort1.ReadExisting();
+                    box_received_data.Text = serialPort1.ReadExisting();
                     //textBox2.Text = tekst;
                 }
                 else
                 {
-                    textBox2.Text = "Port jest zamkniety!";
+                    box_received_data.Text = "Port jest zamkniety!";
                 }
             }
             catch (TimeoutException)
             {
-                textBox2.Text = "Timeout Exception";
+                box_received_data.Text = "Timeout Exception";
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btn_open_port_Click(object sender, EventArgs e)
         {
             try
             {
-                if (comboBox1.Text == "" || comboBox2.Text == "")
+                if (box_port_names.Text == "" || box_baud_rate.Text == "")
                 {
-                    textBox2.Text = "Wybierz port";
+                    box_received_data.Text = "Wybierz port";
                 }
                 else
                 {
-                    textBox1.Text = "";
+                    box_sended_data.Text = "";
                     if(caly_tekst!="")
                     {
                         btn_wyslij_liste.Enabled = true;
@@ -244,45 +272,40 @@ namespace facebook_displayer
                     {
                         btn_wyslij_liste.Enabled = false;
                     }
-                    serialPort1.PortName = comboBox1.Text;
-                    serialPort1.BaudRate = Convert.ToInt32(comboBox2.Text);
+                    serialPort1.PortName = box_port_names.Text;
+                    serialPort1.BaudRate = Convert.ToInt32(box_baud_rate.Text);
                     serialPort1.Open();
                     progressBar1.Value = 100;
-                    button1.Enabled = true;
-                    button2.Enabled = true;
-                    textBox1.Enabled = true;
-                    button3.Enabled = false;
-                    button4.Enabled = true;
-                    textBox2.Clear();
+                    btn_send.Enabled = true;
+                    btn_read.Enabled = true;
+                    box_sended_data.Enabled = true;
+                    btn_open_port.Enabled = false;
+                    btn_close_port.Enabled = true;
+                    box_received_data.Clear();
                 }
             }
             catch (UnauthorizedAccessException)
             {
-                textBox2.Text = "Unauthorized Access Exception";
+                box_received_data.Text = "Unauthorized Access Exception";
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btn_close_port_Click(object sender, EventArgs e)
         {
             tekst = "";
             serialPort1.Close();
             progressBar1.Value = 0;
-            button1.Enabled = false;
-            button2.Enabled = false;
-            button4.Enabled = false;
-            button3.Enabled = true;
-            textBox1.Enabled = false;
+            btn_send.Enabled = false;
+            btn_read.Enabled = false;
+            btn_close_port.Enabled = false;
+            btn_open_port.Enabled = true;
+            box_sended_data.Enabled = false;
             btn_wyslij_liste.Enabled = false;
-            textBox2.Clear();
-            textBox1.Clear();
+            box_received_data.Clear();
+            box_sended_data.Clear();
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button5_Click(object sender, EventArgs e)
+        private void btn_send_list_Click(object sender, EventArgs e)
         {
             try
             {
@@ -303,7 +326,7 @@ namespace facebook_displayer
 
                         }
                         jest_nowe = false;
-                        button2_Click(sender, e);
+                        btn_read_Click(sender, e);
                     }
                     else
                     {
@@ -313,20 +336,12 @@ namespace facebook_displayer
                 }
                 else
                 {
-                    textBox1.Text = "Port jest zamkniety!";
+                    box_sended_data.Text = "Port jest zamkniety!";
                 }
             }
             catch (TimeoutException)
             {
-                textBox2.Text = "Timeout Exception";
-            }
-        }
-
-        private void Facebook_displayer_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (serialPort1.IsOpen)
-            {
-                serialPort1.Close();
+                box_received_data.Text = "Timeout Exception";
             }
         }
 
@@ -335,23 +350,25 @@ namespace facebook_displayer
             getAvailablePorts();
         }
 
-        private void button5_Click_1(object sender, EventArgs e)
+        private void btn_auto_send(object sender, EventArgs e)
         {
-            if(button5.Text=="On")
+            if (btn_auto_wysylanie.Text == "On")
             {
-                button5.Text = "Off";
+                btn_auto_wysylanie.Text = "Off";
             }
-            else if(button5.Text=="Off")
+            else if (btn_auto_wysylanie.Text == "Off")
             {
-                button5.Text = "On";
+                btn_auto_wysylanie.Text = "On";
             }
         }
 
-        private void label4_Click(object sender, EventArgs e)
+        private void tabPage1_Click(object sender, EventArgs e)
         {
 
         }
 
- 
+       
+        /* !! ZAKŁADKA - SERIAL PORT !! */
+        /* ----------------------------------------------- */
     }
 }
