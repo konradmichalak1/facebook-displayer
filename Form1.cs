@@ -99,6 +99,7 @@ namespace facebook_displayer
                 {
                     btn_Get_List_Click(sender, e);
                     btn_auto_wysylanie.Text = "On";
+                    btn_open_port_Click(sender, e);////////////auto wybranie portu
                 }
             }
            
@@ -151,6 +152,7 @@ namespace facebook_displayer
                         lstNotificationList.Items.Add("[" + likes_date + "] " + likes_name);
                     }
                     caly_tekst += user_info;
+                    caly_tekst = sprawdz_znak(caly_tekst); /////////////////////
                     txtBox1.Text = caly_tekst;
                     nowy_tekst = "msg=" + user_likes.data[0].name + "$";
                     wyslano_calosc = true;
@@ -166,6 +168,7 @@ namespace facebook_displayer
                         lstNotificationList.Items.Add("[" + likes_date + "] " + likes_name);
                     }
                     caly_tekst += user_info;
+                    caly_tekst = sprawdz_znak(caly_tekst); 
                     txtBox1.Text = caly_tekst;
 
                     if (nowy_tekst != "msg=" + user_likes.data[0].name + "$")
@@ -173,6 +176,7 @@ namespace facebook_displayer
                         jest_nowe = true;
                         pom = true;
                         nowy_tekst = "msg=" + user_likes.data[0].name + "$";
+                        nowy_tekst = sprawdz_znak(nowy_tekst);
                     }
 
                 }
@@ -257,6 +261,8 @@ namespace facebook_displayer
         {
             try
             {
+                box_port_names.Text = "COM4"; ////// auto wybranie portu
+                box_baud_rate.Text = "115200";////// auto wybranie portu
                 if (box_port_names.Text == "" || box_baud_rate.Text == "")
                 {
                     box_received_data.Text = "Wybierz port";
@@ -316,11 +322,13 @@ namespace facebook_displayer
                     {
                         if (pom == false)
                         {
+                            caly_tekst = sprawdz_znak(caly_tekst); /////////////////////
                             serialPort1.WriteLine(caly_tekst);
                             tekst = caly_tekst;
                         }
                         else if (pom == true)
                         {
+                            nowy_tekst = sprawdz_znak(nowy_tekst);
                             serialPort1.WriteLine(nowy_tekst);
                             tekst = nowy_tekst;
 
@@ -367,8 +375,24 @@ namespace facebook_displayer
 
         }
 
-       
-        /* !! ZAKŁADKA - SERIAL PORT !! */
-        /* ----------------------------------------------- */
+
+/* !! ZAKŁADKA - SERIAL PORT !! */
+/* ----------------------------------------------- */
+
+        public string sprawdz_znak(string data) //sprawdza czy string zawiera polskie znaki
+        {
+            data = data.Replace('ą', 'a').Replace('Ą','A');
+            data = data.Replace('ć', 'c').Replace('Ć', 'C');
+            data = data.Replace('Ę', 'E').Replace('ę', 'e');
+            data = data.Replace('Ł', 'L').Replace('ł', 'l');
+            data = data.Replace('Ń', 'N').Replace('ń', 'n');
+            data = data.Replace('Ó', 'O').Replace('ó', 'o');
+            data = data.Replace('Ś', 'S').Replace('ś', 's');
+            data = data.Replace('Ż', 'Z').Replace('ż', 'z');
+            data = data.Replace('Ź', 'Z').Replace('ź', 'z');
+            return data;
+
+        }
+
     }
 }
