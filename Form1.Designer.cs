@@ -39,6 +39,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.pg_logowanie = new System.Windows.Forms.TabPage();
+            this.txtBoxToken = new System.Windows.Forms.TextBox();
+            this.btn_autoSignIn = new System.Windows.Forms.Button();
             this.pg_lista = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -62,7 +64,7 @@
             this.box_baud_rate = new System.Windows.Forms.ComboBox();
             this.box_port_names = new System.Windows.Forms.ComboBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.btn_autoSignIn = new System.Windows.Forms.Button();
+            this.lbl_token = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.pg_logowanie.SuspendLayout();
             this.pg_lista.SuspendLayout();
@@ -156,6 +158,8 @@
             // 
             // pg_logowanie
             // 
+            this.pg_logowanie.Controls.Add(this.lbl_token);
+            this.pg_logowanie.Controls.Add(this.txtBoxToken);
             this.pg_logowanie.Controls.Add(this.btn_autoSignIn);
             this.pg_logowanie.Controls.Add(this.btnSignIn);
             this.pg_logowanie.Controls.Add(this.WebFacebook);
@@ -168,6 +172,25 @@
             this.pg_logowanie.UseVisualStyleBackColor = true;
             this.pg_logowanie.Click += new System.EventHandler(this.tabPage1_Click);
             // 
+            // txtBoxToken
+            // 
+            this.txtBoxToken.Location = new System.Drawing.Point(8, 254);
+            this.txtBoxToken.Name = "txtBoxToken";
+            this.txtBoxToken.Size = new System.Drawing.Size(515, 20);
+            this.txtBoxToken.TabIndex = 3;
+            // 
+            // btn_autoSignIn
+            // 
+            this.btn_autoSignIn.BackColor = System.Drawing.Color.AliceBlue;
+            this.btn_autoSignIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btn_autoSignIn.Location = new System.Drawing.Point(406, 280);
+            this.btn_autoSignIn.Name = "btn_autoSignIn";
+            this.btn_autoSignIn.Size = new System.Drawing.Size(117, 23);
+            this.btn_autoSignIn.TabIndex = 2;
+            this.btn_autoSignIn.Text = "Automatyczne";
+            this.btn_autoSignIn.UseVisualStyleBackColor = false;
+            this.btn_autoSignIn.Click += new System.EventHandler(this.btn_autoSignIn_Click);
+            // 
             // pg_lista
             // 
             this.pg_lista.Controls.Add(this.groupBox4);
@@ -179,7 +202,7 @@
             this.pg_lista.Padding = new System.Windows.Forms.Padding(3);
             this.pg_lista.Size = new System.Drawing.Size(529, 305);
             this.pg_lista.TabIndex = 1;
-            this.pg_lista.Text = "Polubione strony";
+            this.pg_lista.Text = "Lista powiadomień";
             this.pg_lista.UseVisualStyleBackColor = true;
             // 
             // groupBox4
@@ -190,7 +213,7 @@
             this.groupBox4.Size = new System.Drawing.Size(512, 140);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Lista polubionych stron";
+            this.groupBox4.Text = "Lista powiadomień";
             // 
             // groupBox3
             // 
@@ -406,17 +429,14 @@
             this.box_port_names.Size = new System.Drawing.Size(121, 21);
             this.box_port_names.TabIndex = 10;
             // 
-            // btn_autoSignIn
+            // lbl_token
             // 
-            this.btn_autoSignIn.BackColor = System.Drawing.Color.AliceBlue;
-            this.btn_autoSignIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btn_autoSignIn.Location = new System.Drawing.Point(406, 280);
-            this.btn_autoSignIn.Name = "btn_autoSignIn";
-            this.btn_autoSignIn.Size = new System.Drawing.Size(117, 23);
-            this.btn_autoSignIn.TabIndex = 2;
-            this.btn_autoSignIn.Text = "Automatyczne";
-            this.btn_autoSignIn.UseVisualStyleBackColor = false;
-            this.btn_autoSignIn.Click += new System.EventHandler(this.btn_autoSignIn_Click);
+            this.lbl_token.AutoSize = true;
+            this.lbl_token.Location = new System.Drawing.Point(8, 235);
+            this.lbl_token.Name = "lbl_token";
+            this.lbl_token.Size = new System.Drawing.Size(79, 13);
+            this.lbl_token.TabIndex = 4;
+            this.lbl_token.Text = "Access Token:";
             // 
             // Facebook_displayer
             // 
@@ -434,6 +454,7 @@
             this.Load += new System.EventHandler(this.Facebook_Displayer_Load);
             this.tabControl1.ResumeLayout(false);
             this.pg_logowanie.ResumeLayout(false);
+            this.pg_logowanie.PerformLayout();
             this.pg_lista.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -483,6 +504,8 @@
         private System.Windows.Forms.Button btn_auto_wysylanie;
         private System.Windows.Forms.Label lbl4;
         private System.Windows.Forms.Button btn_autoSignIn;
+        private System.Windows.Forms.TextBox txtBoxToken;
+        private System.Windows.Forms.Label lbl_token;
     }
 }
 

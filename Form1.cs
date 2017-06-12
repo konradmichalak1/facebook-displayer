@@ -14,24 +14,24 @@ namespace facebook_displayer
 {
     public partial class Facebook_displayer : Form
     {
-/* ----------------------------------------------- */
-/* -- DEKLARACJA ZMIENNYCH POMOCNICZYCH -- */
+        /* ----------------------------------------------- */
+        /* -- DEKLARACJA ZMIENNYCH POMOCNICZYCH -- */
         public bool wyslano_calosc = false;
         public bool jest_nowe = true;
         public bool pom = false;
         public string user_info = "";
-        public string caly_tekst="";
+        public string caly_tekst = "";
         public string nowy_tekst = "";
         public string tekst;
         public double i = 0;
         public bool auto_login = false;
         string access_token;
-/* !! DEKLARACJA ZMIENNYCH POMOCNICZYCH !! */
-/* ----------------------------------------------- */
+        /* !! DEKLARACJA ZMIENNYCH POMOCNICZYCH !! */
+        /* ----------------------------------------------- */
 
 
-/* ----------------------------------------------- */
-/* -- METODY ZWIĄZANE Z GŁÓWNYM OKNEM APLIKACJI -- */
+        /* ----------------------------------------------- */
+        /* -- METODY ZWIĄZANE Z GŁÓWNYM OKNEM APLIKACJI -- */
         public Facebook_displayer() //Konstruktor klasy
         {
             WebBrowser WebFacebook = new WebBrowser();
@@ -58,84 +58,71 @@ namespace facebook_displayer
             String[] ports = SerialPort.GetPortNames();
             box_port_names.Items.AddRange(ports);
         }
-/* !! METODY ZWIĄZANE Z GŁÓWNYM OKNEM APLIKACJI !! */
-/* ----------------------------------------------- */
+        /* !! METODY ZWIĄZANE Z GŁÓWNYM OKNEM APLIKACJI !! */
+        /* ----------------------------------------------- */
 
 
-/* ----------------------------------------------- */
-/* -- ZAKŁADKA - LOGOWANIE -- */
-        private void btnSignIn_Click(object sender, EventArgs e) //przycisk łączący z serwerem http faceooka
+        /* ----------------------------------------------- */
+        /* -- ZAKŁADKA - LOGOWANIE -- */
+        private void btnSignIn_Click(object sender, EventArgs e) //przycisk łączący z serwerem http facebooka
         {
             string OAuthURL = @"https://www.facebook.com/dialog/oauth?client_id=1373520086004317&redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token&scope=user_birthday,user_likes,user_hometown,user_location,user_events";
             WebFacebook.Navigate(OAuthURL);
-        } 
-    
+        }
+
         private void btn_autoSignIn_Click(object sender, EventArgs e)
         {
             string OAuthURL = @"https://www.facebook.com/dialog/oauth?client_id=1373520086004317&redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token&scope=user_birthday,user_likes,user_hometown,user_location,user_events";
             auto_login = true;
             WebFacebook.Navigate(OAuthURL);
-        
+
         }
         private void WebFacebook_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) //funkcja pobierająca token uzytkownika
         {
-            if(WebFacebook.Url.AbsoluteUri.Contains("access_token"))
+            if (WebFacebook.Url.AbsoluteUri.Contains("access_token"))
             {
                 string url1 = WebFacebook.Url.AbsoluteUri;
                 string url2 = url1.Substring(url1.IndexOf("access_token") + 13);
                 access_token = url2.Substring(0, url2.IndexOf("&"));
-                //MessageBox.Show("access_token = " + access_token);
 
                 FacebookClient fb = new FacebookClient(access_token);
                 dynamic data = fb.Get("me?fields=name,birthday,education,gender,email");
-                if(auto_login==false) MessageBox.Show("Zalogowano jako " + data.name + ", ur. " + data.birthday);
+                if (auto_login == false) MessageBox.Show("Zalogowano jako " + data.name + ", ur. " + data.birthday);
                 user_info = "usr=" + data.name + "$" + "dat=" + data.birthday + "$";
                 btn_Get_List.Enabled = true;
                 btnSignIn.Enabled = false;
                 btn_autoSignIn.Enabled = false;
                 btnClear.Enabled = true;
 
-                if (auto_login == true)
+                if (auto_login == true) 
                 {
                     btn_Get_List_Click(sender, e);
                     btn_auto_wysylanie.Text = "On";
-                    btn_open_port_Click(sender, e);////////////auto wybranie portu
+                    btn_open_port_Click(sender, e);
                 }
             }
-           
+
         }
-/* !! ZAKŁADKA - LOGOWANIE !! */
-/* ----------------------------------------------- */
+        /* !! ZAKŁADKA - LOGOWANIE !! */
+        /* ----------------------------------------------- */
 
 
-/* -- ZAKŁADKA - POLUBIONE STRONY -- */
-/* ----------------------------------------------- */
+        /* -- ZAKŁADKA - LISTA POWIADOMIEŃ -- */
+        /* ----------------------------------------------- */
         private void btn_Get_List_Click(object sender, EventArgs e) //pobieranie listy z facebooka
         {
             try
             {
-                /*--------POBIERANIE LISTY POWIADOMIEN--------*/
-                //FacebookClient fb = new FacebookClient(access_token);
-                //GET TOKEN: https://developers.facebook.com/tools/explorer/?method=GET&path=me%2Fstatuses&version=v2.9
-                //FacebookClient fb = new FacebookClient("EAACEdEose0cBAMhZAPui70MamHZC2TefiZCOPZCTjqV1ouLcGYGRhH7sZAiPWAOq96TgPmiFShqyPTb6SWIEetegRzZA1bfxOZBUmzibQZCsQNMWIPEnSghY33aGP5fyk14dSzOZALyz86kOKyzPiQvB37Wd9ryWD6D60IcPf7LjkDnHguCWbXPSOLNbZACWWrQz0ZD");
-                /*dynamic notifications = fb.Get("/me/notifications");
-                int notification_count = (int)notifications.data.Count;
-                caly_tekst = "";
-                lstNotificationList.Items.Clear();
-                btn_wyslij_liste.Enabled = true;
-                for (int i = 0; i < notification_count; i++)
-                {
-                    caly_tekst += "*" + i + "*" + notifications.data[i].title;
-                    string notification_name = notifications.data[i].title;
-                    lstNotificationList.Items.Add(notification_name);
-                }
-                txtBox1.Text = caly_tekst;*/
-                /*--------------------------------------------------------------*/
+                /*--------POBIERANIE POWIADOMIEŃ--------*/ //
                 timer1.Start();
-                /*--------POBIERANIE POLUBIONYCH STRON--------*/
-                FacebookClient fb = new FacebookClient(access_token);
-                dynamic user_likes = fb.Get("/me/likes");
-                int likes_count = (int)user_likes.data.Count;
+                string token_auto = txtBoxToken.Text;
+                if (token_auto == "") { MessageBox.Show("Nieprawidłowy Access Token!"); this.Close(); }
+                FacebookClient fb = new FacebookClient(token_auto);
+                dynamic user_notifications = fb.Get("/me/notifications");
+                int likes_count = (int)user_notifications.data.Count;
+
+                if (likes_count > 5) likes_count = 5; //ogranieczenie komunikatów do 5
+
 
                 caly_tekst = "";
                 lstNotificationList.Items.Clear();
@@ -146,36 +133,43 @@ namespace facebook_displayer
                 {
                     for (int i = 0; i < likes_count; i++)
                     {
-                        caly_tekst += "msg=" + user_likes.data[i].name + "$";
-                        string likes_name = user_likes.data[i].name;
-                        string likes_date = user_likes.data[i].created_time;
-                        lstNotificationList.Items.Add("[" + likes_date + "] " + likes_name);
+                        caly_tekst += "msg=" + user_notifications.data[i].title + "$";
+                        string notification_name = user_notifications.data[i].title;
+                        string notification_date = user_notifications.data[i].created_time;
+                        lstNotificationList.Items.Add("[" + notification_date + "] " + notification_name);
                     }
+
                     caly_tekst += user_info;
-                    caly_tekst = sprawdz_znak(caly_tekst); /////////////////////
+                    caly_tekst = sprawdz_znak(caly_tekst);
                     txtBox1.Text = caly_tekst;
-                    nowy_tekst = "msg=" + user_likes.data[0].name + "$";
+                    nowy_tekst = "msg=" + user_notifications.data[0].title + "$";
+                    nowy_tekst = sprawdz_znak(nowy_tekst);
                     wyslano_calosc = true;
                 }
-                else if(wyslano_calosc==true)
+                else if (wyslano_calosc == true)
                 {
 
                     for (int i = 0; i < likes_count; i++)
                     {
-                        caly_tekst += "msg=" + user_likes.data[i].name + "$";
-                        string likes_name = user_likes.data[i].name;
-                        string likes_date = user_likes.data[i].created_time;
-                        lstNotificationList.Items.Add("[" + likes_date + "] " + likes_name);
+                        caly_tekst += "msg=" + user_notifications.data[i].title + "$";
+                        string notification_name = user_notifications.data[i].title;
+                        string notification_date = user_notifications.data[i].created_time;
+                        lstNotificationList.Items.Add("[" + notification_date + "] " + notification_name);
                     }
                     caly_tekst += user_info;
-                    caly_tekst = sprawdz_znak(caly_tekst); 
+                    caly_tekst = sprawdz_znak(caly_tekst);
                     txtBox1.Text = caly_tekst;
+                    string do_sprawdzania = "msg=" + user_notifications.data[0].title + "$";
 
-                    if (nowy_tekst != "msg=" + user_likes.data[0].name + "$")
+                    do_sprawdzania = sprawdz_znak(do_sprawdzania);
+                    nowy_tekst = sprawdz_znak(nowy_tekst);
+                    if (nowy_tekst != do_sprawdzania)
                     {
                         jest_nowe = true;
                         pom = true;
-                        nowy_tekst = "msg=" + user_likes.data[0].name + "$";
+                        nowy_tekst = "msg=" + user_notifications.data[0].title + "$";
+
+
                         nowy_tekst = sprawdz_znak(nowy_tekst);
                     }
 
@@ -194,17 +188,17 @@ namespace facebook_displayer
             lstNotificationList.Items.Clear();
             timer1.Stop();
         }
-/* !! ZAKŁADKA - POLUBIONE STRONY !! */
-/* ----------------------------------------------- */
+        /* !! ZAKŁADKA - LISTA POWIADOMIEŃ !! */
+        /* ----------------------------------------------- */
 
 
-/* -- ZAKŁADKA - SERIAL PORT -- */
-/* ----------------------------------------------- */
+        /* -- ZAKŁADKA - SERIAL PORT -- */
+        /* ----------------------------------------------- */
         private void timer1_Tick(object sender, EventArgs e)
         {
             btn_Get_List_Click(sender, e);
 
-            if(serialPort1.IsOpen)
+            if (serialPort1.IsOpen)
             {
                 if (btn_auto_wysylanie.Text == "On" && btn_wyslij_liste.Enabled == true)
                 {
@@ -212,7 +206,7 @@ namespace facebook_displayer
                 }
             }
         }
-   
+
         private void btn_send_Click(object sender, EventArgs e)
         {
             try
@@ -222,7 +216,7 @@ namespace facebook_displayer
                     if (box_sended_data.Text != "")
                     {
                         serialPort1.WriteLine(box_sended_data.Text);
-                        tekst = box_sended_data.Text;//-DO ZMIANY-//
+                        tekst = box_sended_data.Text;
                         box_sended_data.Clear();
                     }
                 }
@@ -244,7 +238,6 @@ namespace facebook_displayer
                 if (serialPort1.IsOpen == true)
                 {
                     box_received_data.Text = serialPort1.ReadExisting();
-                    //textBox2.Text = tekst;
                 }
                 else
                 {
@@ -261,8 +254,11 @@ namespace facebook_displayer
         {
             try
             {
-                box_port_names.Text = "COM4"; ////// auto wybranie portu
-                box_baud_rate.Text = "115200";////// auto wybranie portu
+                if (auto_login == true)           // | 
+                {                                 // | auto wybranie portu
+                    box_port_names.Text = "COM4"; // | 
+                    box_baud_rate.Text = "115200";// |
+                }
                 if (box_port_names.Text == "" || box_baud_rate.Text == "")
                 {
                     box_received_data.Text = "Wybierz port";
@@ -270,11 +266,11 @@ namespace facebook_displayer
                 else
                 {
                     box_sended_data.Text = "";
-                    if(caly_tekst!="")
+                    if (caly_tekst != "")
                     {
                         btn_wyslij_liste.Enabled = true;
                     }
-                    else if(caly_tekst == "")
+                    else if (caly_tekst == "")
                     {
                         btn_wyslij_liste.Enabled = false;
                     }
@@ -316,31 +312,28 @@ namespace facebook_displayer
             try
             {
                 if (serialPort1.IsOpen == true)
-                { 
+                {
                     btn_wyslij_liste.Enabled = true;
                     if (jest_nowe == true)
                     {
                         if (pom == false)
                         {
-                            caly_tekst = sprawdz_znak(caly_tekst); /////////////////////
+                            caly_tekst = sprawdz_znak(caly_tekst); 
                             serialPort1.WriteLine(caly_tekst);
+                            caly_tekst = sprawdz_znak(caly_tekst);
                             tekst = caly_tekst;
                         }
                         else if (pom == true)
                         {
                             nowy_tekst = sprawdz_znak(nowy_tekst);
                             serialPort1.WriteLine(nowy_tekst);
+                            nowy_tekst = sprawdz_znak(nowy_tekst);
                             tekst = nowy_tekst;
 
                         }
                         jest_nowe = false;
                         btn_read_Click(sender, e);
                     }
-                    else
-                    {
-                      //MessageBox.Show("Nie ma nowego"); //do testow
-                    }
-                    //textBox1.Clear();
                 }
                 else
                 {
@@ -376,12 +369,12 @@ namespace facebook_displayer
         }
 
 
-/* !! ZAKŁADKA - SERIAL PORT !! */
-/* ----------------------------------------------- */
+        /* !! ZAKŁADKA - SERIAL PORT !! */
+        /* ----------------------------------------------- */
 
         public string sprawdz_znak(string data) //sprawdza czy string zawiera polskie znaki
         {
-            data = data.Replace('ą', 'a').Replace('Ą','A');
+            data = data.Replace('ą', 'a').Replace('Ą', 'A');
             data = data.Replace('ć', 'c').Replace('Ć', 'C');
             data = data.Replace('Ę', 'E').Replace('ę', 'e');
             data = data.Replace('Ł', 'L').Replace('ł', 'l');
